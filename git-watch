@@ -7,10 +7,17 @@ set -eu
 # What branch do we want to watch (default to origin/master)
 branch="origin/master"
 async=false
+refresh_delay=60
 
-while getopts ":b:a" opt; do
+while getopts ":b:t:a" opt; do
     case "$opt" in
     b)  branch="$OPTARG"
+        ;;
+    t)  refresh_delay="$OPTARG"
+        if ! [[ $refresh_delay =~ ^[0-9]+$ ]]; then
+            echo "Refresh delay must be a number (of seconds)"
+            exit 1
+        fi
         ;;
     a)  async=true
         ;;
@@ -39,7 +46,7 @@ while [ 1 ]; do
         latest_revision=$current_revision
         eval "$@"
     fi
-    sleep 60
+    sleep "$refresh_delay"
 done
 }
 
