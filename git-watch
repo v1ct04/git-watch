@@ -2,14 +2,21 @@
 
 set -eu
 
+function log {
+    if [ $verbose = true ]; then
+        (>&2 echo "[$(date)]: $@")
+    fi
+}
+
 # Command Line Options
 
 # What branch do we want to watch (default to origin/master)
 branch="origin/master"
 async=false
 refresh_delay=60
+verbose=false
 
-while getopts ":b:t:a" opt; do
+while getopts ":b:t:av" opt; do
     case "$opt" in
     b)  branch="$OPTARG"
         ;;
@@ -20,6 +27,8 @@ while getopts ":b:t:a" opt; do
         fi
         ;;
     a)  async=true
+        ;;
+    v)  verbose=true
         ;;
     :)  echo "Required argument for option $OPTARG"
         exit 1
@@ -38,13 +47,15 @@ latest_revision="none"
 while [ 1 ]; do
 
     # get the latest revision SHA.
+    log "Refreshing current revision"
     current_revision=`git rev-parse $branch`
 
     # if we haven't seen that one yet, then we know there's new stuff.
     if [ $latest_revision != $current_revision ]; then
+        log "Changed! New revision: $current_revision"
+        eval "$@"
         # mark the newest revision as seen.
         latest_revision=$current_revision
-        eval "$@"
     fi
     sleep "$refresh_delay"
 done
