@@ -1,14 +1,23 @@
 #!/bin/bash
 
+
+# Command Line Options
+
+# What branch do we want to watch (default to origin/master)
+branch="origin/master"
+
+while getopts "b:" opt; do
+    case "$opt" in
+    b)  branch="$OPTARG"
+        ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# Main watch function
+
 function run {
 
-# what branch do we want to watch (default to origin/master)
-if [ "$1" = "-b" ]; then
-    branch="$2"
-    shift 2
-else
-    branch="origin/master"
-fi
 latest_revision="none"
 
 # loop forever, need to kill the process.
@@ -26,6 +35,8 @@ while [ 1 ]; do
     sleep 60
 done
 }
+
+# Test git repository and start execution
 
 if git rev-parse --git-dir > /dev/null 2>&1; then
 	(run "$@" &)
