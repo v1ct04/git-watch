@@ -1,4 +1,4 @@
-git-notify
+git-watch
 ========
 
 Simple bash script for watching a Git repository and executing a specified command.
