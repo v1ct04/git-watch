@@ -1,32 +1,27 @@
 git-notify
 ========
 
-This little bash script will watch your origin/master for updates every 60 seconds and uses notify-send to alert you of new commits.
+Simple bash script for watching a Git repository and executing a specified command.
 
-I asked [this question](http://stackoverflow.com/questions/5082001/is-there-a-tool-to-watch-a-remote-git-repository-on-ubuntu-and-do-popup-notificat) on StackOverflow to find out if there was a tool to notify me of commits to remote git repositories, and the answer came back no!
-
-Thus, git-notify was born!
+Based on jakeonrails/git-notify.
 
 Usage:
 ----------
 
-    ~/code/some-git-repository $ git-notify
+    ~/code/some-git-repository $ git-wach echo "Hey!"
 
 The script will run in the background. If you want to kill it later, you can do:
 
-    ps aux | grep '[g]it-notify'
+    git-watch -k
 
-Which will output something like:
-
-    jake      9541  0.0  0.0  12012  1392 pts/3    S    12:54   0:00 /bin/bash ./git-notify
-
-Note the first number in the list, 9541, that is the PID of the script. You can now terminate it like so:
-
-    kill 9541
+There are some extra options that I didn't have time to document as well. Check switch-case [here](https://github.com/victorges/git-watch/blame/master/git-watch#L33) for detail 🙈
 
 Installation:
 ------------
-Just download git-notify and put it somewhere in your path.
+Just download git-watch and put it somewhere in your path.
 
+Victor Elias, victorgelias@gmail.com
+
+Original code from:
 Jake Moffatt, jakeonrails@gmail.com
 
